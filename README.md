@@ -1,56 +1,157 @@
-# {{crew_name}} Crew
+# MyFlow - AI Research Agent
 
-Welcome to the {{crew_name}} Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+An AI research agent built with [CrewAI](https://crewai.com), featuring a React frontend and deployable on [EdgeOne Makers](https://pages.edgeone.ai).
 
-## Installation
+## Project Structure
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+```
+myflow/
+├── frontend/                  React + Vite frontend
+│   ├── src/
+│   │   ├── App.jsx            Main React component
+│   │   ├── main.jsx           Entry point
+│   │   └── index.css          Styling
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+├── cloud-functions/           Python Cloud Functions (EdgeOne Makers)
+│   └── research/
+│       ├── index.py           Research API endpoint
+│       └── requirements.txt
+├── src/myflow/                CrewAI source code
+│   ├── main.py                Flow orchestration
+│   └── crews/
+│       └── content_crew/      Research crew definition
+├── dev_server.py              Local development server
+├── edgeone.json               EdgeOne Makers configuration
+├── pyproject.toml
+└── .env                       Environment variables (not committed)
+```
 
-First, if you haven't already, install uv:
+## Features
+
+- AI-powered research on any topic
+- Generates both English and Chinese reports
+- Web search integration via SerperDevTool
+- Clean, responsive React frontend with loading progress
+- One-click deployment on EdgeOne Makers
+
+## Prerequisites
+
+- Python >= 3.10, < 3.14
+- Node.js >= 18
+
+## Local Development
+
+### 1. Install dependencies
 
 ```bash
+# Python dependencies
 pip install uv
+uv sync
+
+# Frontend dependencies
+cd frontend && npm install && cd ..
 ```
 
-Next, navigate to your project directory and install the dependencies:
+### 2. Configure environment
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
-```
-
-### Customizing
-
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/myflow/config/agents.yaml` to define your agents
-- Modify `src/myflow/config/tasks.yaml` to define your tasks
-- Modify `src/myflow/crew.py` to add your own logic, tools and specific args
-- Modify `src/myflow/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your flow and begin execution, run this from the root folder of your project:
+Create `.env` file in the project root:
 
 ```bash
-crewai run
+# Using Ollama (local)
+BASE_URL=http://localhost:11434
+API_KEY=123456
+MODEL=ollama/gemma4:latest
+SERPER_API_KEY=your-serper-key
+
+# Using OpenAI
+# BASE_URL=
+# MODEL=openai/gpt-4o
+# API_KEY=sk-your-openai-key
+# SERPER_API_KEY=your-serper-key
 ```
 
-This command initializes the myflow Flow as defined in your configuration.
+### 3. Start the application
 
-This example, unmodified, will run a content creation flow on AI Agents and save the output to `output/post.md`.
+Open two terminals:
 
-## Understanding Your Crew
+**Terminal 1 - Backend API server:**
+```bash
+python dev_server.py
+```
 
-The myflow Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+**Terminal 2 - Frontend dev server:**
+```bash
+cd frontend && npm run dev
+```
+
+### 4. Open in browser
+
+Visit `http://localhost:5173`, enter a topic, and click "Start Research".
+
+> The research typically takes 1-2 minutes. The frontend shows a progress bar and elapsed time.
+
+## Deploy to EdgeOne Makers
+
+### Option 1: Git Integration (Recommended)
+
+1. Push this project to a GitHub repository
+2. Log into [EdgeOne Makers Console](https://console.tencentcloud.com/edgeone/makers)
+3. Click "Import Git Repository" and select your repository
+4. Configure environment variables:
+
+| Variable | Description |
+|----------|-------------|
+| `MODEL` | LLM model name, e.g. `openai/gpt-4o` |
+| `API_KEY` | API key for the LLM provider |
+| `BASE_URL` | Custom LLM base URL (leave empty for OpenAI) |
+| `SERPER_API_KEY` | SerperDev API key for web search |
+
+5. Click "Deploy"
+
+### Option 2: EdgeOne CLI
+
+```bash
+npm install -g edgeone
+edgeone login
+edgeone makers init
+edgeone makers deploy
+```
+
+### EdgeOne Makers Free Tier
+
+- 500,000 Tokens/month (via built-in AI Gateway)
+- Unlimited static site traffic
+- 200,000 Cloud Function executions/month
+
+Use the built-in AI Gateway:
+```bash
+MODEL=openai/gpt-4o
+API_KEY=<your-api-key>
+BASE_URL=https://ai-gateway.edgeone.link/v1
+```
+
+## API
+
+```
+POST /api/research
+Content-Type: application/json
+
+{"topic": "AI Agents"}
+```
+
+Response:
+```json
+{
+  "success": true,
+  "topic": "AI Agents",
+  "report_en": "...",
+  "report_cn": "..."
+}
+```
 
 ## Support
 
-For support, questions, or feedback regarding the {{crew_name}} Crew or crewAI.
-
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
-
-Let's create wonders together with the power and simplicity of crewAI.
+- [CrewAI Documentation](https://docs.crewai.com)
+- [EdgeOne Makers Documentation](https://pages.edgeone.ai/document/product-introduction)

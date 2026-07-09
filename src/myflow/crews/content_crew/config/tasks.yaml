@@ -1,0 +1,22 @@
+# src/latest_ai_flow/crews/content_crew/config/tasks.yaml
+research_task:
+  description: >
+    Conduct thorough research about {topic}. Use web search to find current,
+    credible information. The current year is 2026.
+  expected_output: >
+    A markdown report with clear sections: key trends, notable tools or companies,
+    and implications. Aim for 800–1200 words. No fenced code blocks around the whole document.
+  agent: researcher
+  output_file: output/report.md
+
+
+research_task_cn:
+  description: >
+    根据上面的研究结果，用简体中文撰写一份结构一致的中文报告。
+    保持专业、通顺，面向中文读者。字数 800–1200 字。
+  expected_output: >
+    中文 Markdown 报告，包含：关键趋势、代表性工具或公司、行业影响与展望。
+  agent: researcher
+  context:
+  - research_task
+  output_file: output/report_cn.md

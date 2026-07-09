@@ -1,0 +1,4 @@
+crewai[tools]==1.14.7
+pydantic>=2.5.0
+python-dotenv>=1.0.0
+serpapi>=0.1.0

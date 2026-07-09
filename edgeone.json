@@ -1,10 +1,5 @@
 {
   "installCommand": "cd frontend && npm install",
   "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/dist",
-  "cloudFunctions": {
-    "python": {
-      "maxDuration": 120
-    }
-  }
+  "outputDirectory": "frontend/dist"
 }

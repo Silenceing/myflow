@@ -5,10 +5,9 @@ import sys
 import json
 import traceback
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-python_src = os.path.join(project_root, "python_src")
-if python_src not in sys.path:
-    sys.path.insert(0, python_src)
+agents_dir = os.path.dirname(os.path.abspath(__file__))
+if agents_dir not in sys.path:
+    sys.path.insert(0, agents_dir)
 
 
 async def handler(context):

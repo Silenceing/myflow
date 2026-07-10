@@ -6,10 +6,16 @@ lib/
 .DS_Store
 .venv/
 node_modules/
-frontend/dist/
+dist/
 output/*.md
 *.egg-info/
-dist/
 build/
 .crewai/
 *.log
+python_src/
+
+# Tencent Cloud EdgeOne
+.env
+.edgeone/*
+.tef_dist/*
+  

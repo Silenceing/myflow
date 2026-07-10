@@ -7,7 +7,6 @@ research_task:
     A markdown report with clear sections: key trends, notable tools or companies,
     and implications. Aim for 800–1200 words. No fenced code blocks around the whole document.
   agent: researcher
-  output_file: output/report.md
 
 
 research_task_cn:
@@ -19,4 +18,3 @@ research_task_cn:
   agent: researcher
   context:
   - research_task
-  output_file: output/report_cn.md

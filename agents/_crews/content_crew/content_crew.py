@@ -1,4 +1,3 @@
-# src/latest_ai_flow/crews/content_crew/content_crew.py
 from typing import List
 
 from crewai import Agent, Crew, Process, Task
@@ -7,13 +6,10 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
 from crewai import LLM
 import os
-import dotenv
 
-dotenv.load_dotenv(dotenv_path="../../")
-
-MODEL = os.getenv("MODEL", "openai/gpt-4o")
-BASE_URL = os.getenv("BASE_URL", "")
-API_KEY = os.getenv("API_KEY", "")
+MODEL = os.environ.get("MODEL", "openai/gpt-4o")
+BASE_URL = os.environ.get("BASE_URL", "")
+API_KEY = os.environ.get("API_KEY", "")
 
 llm_kwargs = {
     "model": MODEL,
@@ -25,8 +21,6 @@ if API_KEY:
     llm_kwargs["api_key"] = API_KEY
 
 llm = LLM(**llm_kwargs)
-
-
 
 
 @CrewBase
@@ -42,7 +36,7 @@ class ResearchCrew:
   @agent
   def researcher(self) -> Agent:
     return Agent(
-      config=self.agents_config["researcher"],  # type: ignore[index]
+      config=self.agents_config["researcher"],
       verbose=True,
       tools=[SerperDevTool()],
       llm=llm
@@ -51,7 +45,7 @@ class ResearchCrew:
   @task
   def research_task(self) -> Task:
     return Task(
-      config=self.tasks_config["research_task"],  # type: ignore[index]
+      config=self.tasks_config["research_task"],
     )
   
   @task

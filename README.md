@@ -6,25 +6,24 @@ An AI research agent built with [CrewAI](https://crewai.com), featuring a React 
 
 ```
 myflow/
-├── frontend/                  React + Vite frontend
-│   ├── src/
-│   │   ├── App.jsx            Main React component
-│   │   ├── main.jsx           Entry point
-│   │   └── index.css          Styling
-│   ├── index.html
-│   ├── package.json
-│   └── vite.config.js
-├── cloud-functions/           Python Cloud Functions (EdgeOne Makers)
-│   └── research/
-│       ├── index.py           Research API endpoint
-│       └── requirements.txt
-├── src/myflow/                CrewAI source code
-│   ├── main.py                Flow orchestration
-│   └── crews/
-│       └── content_crew/      Research crew definition
-├── dev_server.py              Local development server
+├── src/                       React + Vite frontend
+│   ├── App.jsx                Main React component
+│   ├── main.jsx               Entry point
+│   └── index.css              Styling
+├── agents/                    CrewAI Agent (EdgeOne Makers)
+│   ├── index.py               Agent handler endpoint
+│   ├── requirements.txt       Python dependencies
+│   └── _crews/                CrewAI crew definitions
+│       └── content_crew/
+│           ├── content_crew.py
+│           └── config/
+│               ├── agents.yaml
+│               └── tasks.yaml
+├── python_src/                Python source code (for local dev)
+│   └── myflow/
+├── index.html                 Entry HTML
+├── package.json               Frontend dependencies
 ├── edgeone.json               EdgeOne Makers configuration
-├── pyproject.toml
 └── .env                       Environment variables (not committed)
 ```
 
@@ -38,57 +37,42 @@ myflow/
 
 ## Prerequisites
 
-- Python >= 3.10, < 3.14
 - Node.js >= 18
+- Python 3.11+
+- EdgeOne CLI
 
 ## Local Development
 
-### 1. Install dependencies
+### 1. Install EdgeOne CLI
 
 ```bash
-# Python dependencies
-pip install uv
-uv sync
-
-# Frontend dependencies
-cd frontend && npm install && cd ..
+npm install -g edgeone
+edgeone login
 ```
 
-### 2. Configure environment
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment
 
 Create `.env` file in the project root:
 
 ```bash
-# Using Ollama (local)
-BASE_URL=http://localhost:11434
-API_KEY=123456
-MODEL=ollama/gemma4:latest
+MODEL=openai/gpt-4o
+API_KEY=sk-your-openai-key
 SERPER_API_KEY=your-serper-key
-
-# Using OpenAI
-# BASE_URL=
-# MODEL=openai/gpt-4o
-# API_KEY=sk-your-openai-key
-# SERPER_API_KEY=your-serper-key
 ```
 
-### 3. Start the application
+### 4. Start local development server
 
-Open two terminals:
-
-**Terminal 1 - Backend API server:**
 ```bash
-python dev_server.py
+edgeone makers dev
 ```
 
-**Terminal 2 - Frontend dev server:**
-```bash
-cd frontend && npm run dev
-```
-
-### 4. Open in browser
-
-Visit `http://localhost:5173`, enter a topic, and click "Start Research".
+Visit `http://localhost:8080`, enter a topic, and click "Start Research".
 
 > The research typically takes 1-2 minutes. The frontend shows a progress bar and elapsed time.
 
@@ -123,7 +107,7 @@ edgeone makers deploy
 
 - 500,000 Tokens/month (via built-in AI Gateway)
 - Unlimited static site traffic
-- 200,000 Cloud Function executions/month
+- 200,000 Agent executions/month
 
 Use the built-in AI Gateway:
 ```bash
@@ -135,7 +119,7 @@ BASE_URL=https://ai-gateway.edgeone.link/v1
 ## API
 
 ```
-POST /api/research
+POST /index
 Content-Type: application/json
 
 {"topic": "AI Agents"}

@@ -21,16 +21,23 @@ async def handler(context):
     topic = body.get("topic", "AI Agents")
 
     try:
-        os.environ["OPENAI_API_KEY"] = context.env.get("AI_GATEWAY_API_KEY", "")
-        os.environ["OPENAI_API_BASE"] = context.env.get("AI_GATEWAY_BASE_URL", "https://ai-gateway.edgeone.link/v1")
-        os.environ["OPENAI_MODEL_NAME"] = context.env.get("AI_GATEWAY_MODEL", "openai/gpt-4o")
-        os.environ["SERPER_API_KEY"] = context.env.get("SERPER_API_KEY", "")
+        env = dict(context.env or {})
 
-        print(f"DEBUG: OPENAI_API_KEY={'set' if os.environ.get('OPENAI_API_KEY') else 'MISSING'}", flush=True)
-        print(f"DEBUG: OPENAI_API_BASE={os.environ.get('OPENAI_API_BASE', 'MISSING')}", flush=True)
-        print(f"DEBUG: OPENAI_MODEL_NAME={os.environ.get('OPENAI_MODEL_NAME', 'MISSING')}", flush=True)
+        os.environ.setdefault("OPENAI_API_KEY", env.get("AI_GATEWAY_API_KEY", ""))
+        os.environ.setdefault("OPENAI_API_BASE", env.get("AI_GATEWAY_BASE_URL", "https://ai-gateway.edgeone.link/v1"))
+        os.environ.setdefault("OPENAI_MODEL_NAME", env.get("AI_GATEWAY_MODEL", "gpt-4o"))
+        os.environ.setdefault("SERPER_API_KEY", env.get("SERPER_API_KEY", ""))
+
+        # pass context.env directly to the crew module (used by create_llm)
+        import _crews.content_crew.content_crew as _cc
+        _cc._env = env
 
         from _crews.content_crew.content_crew import ResearchCrew
+
+        print(f"DEBUG: AI_GATEWAY_API_KEY={'set' if env.get('AI_GATEWAY_API_KEY') else 'MISSING'}", flush=True)
+        print(f"DEBUG: AI_GATEWAY_BASE_URL={env.get('AI_GATEWAY_BASE_URL', 'MISSING')}", flush=True)
+        print(f"DEBUG: AI_GATEWAY_MODEL={env.get('AI_GATEWAY_MODEL', 'MISSING')}", flush=True)
+        print(f"DEBUG: env keys={list(env.keys())}", flush=True)
 
         crew = ResearchCrew().crew()
         result = crew.kickoff(inputs={"topic": topic})

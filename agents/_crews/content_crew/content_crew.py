@@ -7,20 +7,22 @@ from crewai_tools import SerperDevTool
 from crewai import LLM
 import os
 
-MODEL = os.environ.get("OPENAI_MODEL_NAME", "openai/gpt-4o")
-BASE_URL = os.environ.get("OPENAI_API_BASE", "")
-API_KEY = os.environ.get("OPENAI_API_KEY", "")
 
-llm_kwargs = {
-    "model": MODEL,
-    "temperature": 0.1,
-}
-if BASE_URL:
-    llm_kwargs["base_url"] = BASE_URL
-if API_KEY:
-    llm_kwargs["api_key"] = API_KEY
+def create_llm():
+    api_key = os.environ.get("OPENAI_API_KEY", "")
+    base_url = os.environ.get("OPENAI_API_BASE", "")
+    model = os.environ.get("OPENAI_MODEL_NAME", "openai/gpt-4o")
 
-llm = LLM(**llm_kwargs)
+    llm_kwargs = {
+        "model": model,
+        "temperature": 0.1,
+    }
+    if base_url:
+        llm_kwargs["base_url"] = base_url
+    if api_key:
+        llm_kwargs["api_key"] = api_key
+
+    return LLM(**llm_kwargs)
 
 
 @CrewBase
@@ -39,7 +41,7 @@ class ResearchCrew:
       config=self.agents_config["researcher"],
       verbose=True,
       tools=[SerperDevTool()],
-      llm=llm
+      llm=create_llm()
     )
 
   @task

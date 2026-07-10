@@ -11,7 +11,7 @@ myflow/
 │   ├── main.jsx               Entry point
 │   └── index.css              Styling
 ├── agents/                    CrewAI Agent (EdgeOne Makers)
-│   ├── index.py               Agent handler endpoint
+│   ├── stream.py              Agent handler endpoint
 │   ├── requirements.txt       Python dependencies
 │   └── _crews/                CrewAI crew definitions
 │       └── content_crew/
@@ -61,8 +61,9 @@ npm install
 Create `.env` file in the project root:
 
 ```bash
-MODEL=openai/gpt-4o
-API_KEY=sk-your-openai-key
+AI_GATEWAY_API_KEY=your-api-key
+AI_GATEWAY_BASE_URL=https://ai-gateway.edgeone.link/v1
+AI_GATEWAY_MODEL=openai/gpt-4o
 SERPER_API_KEY=your-serper-key
 ```
 
@@ -87,9 +88,9 @@ Visit `http://localhost:8080`, enter a topic, and click "Start Research".
 
 | Variable | Description |
 |----------|-------------|
-| `MODEL` | LLM model name, e.g. `openai/gpt-4o` |
-| `API_KEY` | API key for the LLM provider |
-| `BASE_URL` | Custom LLM base URL (leave empty for OpenAI) |
+| `AI_GATEWAY_API_KEY` | Model gateway API key |
+| `AI_GATEWAY_BASE_URL` | Gateway base URL, e.g. `https://ai-gateway.edgeone.link/v1` |
+| `AI_GATEWAY_MODEL` | Model ID, e.g. `openai/gpt-4o` (optional, defaults to `@makers/deepseek-v4-flash`) |
 | `SERPER_API_KEY` | SerperDev API key for web search |
 
 5. Click "Deploy"
@@ -111,15 +112,15 @@ edgeone makers deploy
 
 Use the built-in AI Gateway:
 ```bash
-MODEL=openai/gpt-4o
-API_KEY=<your-api-key>
-BASE_URL=https://ai-gateway.edgeone.link/v1
+AI_GATEWAY_API_KEY=<your-api-key>
+AI_GATEWAY_BASE_URL=https://ai-gateway.edgeone.link/v1
+AI_GATEWAY_MODEL=openai/gpt-4o
 ```
 
 ## API
 
 ```
-POST /index
+POST /stream
 Content-Type: application/json
 
 {"topic": "AI Agents"}

@@ -12,15 +12,15 @@ if python_src not in sys.path:
 
 
 async def handler(context):
-    """POST /index — research endpoint."""
+    """POST /stream — research endpoint."""
 
     body = context.request.body or {}
     topic = body.get("topic", "AI Agents")
 
     try:
-        os.environ["MODEL"] = context.env.get("MODEL", "openai/gpt-4o")
-        os.environ["BASE_URL"] = context.env.get("BASE_URL", "")
-        os.environ["API_KEY"] = context.env.get("API_KEY", "")
+        os.environ["OPENAI_API_KEY"] = context.env.get("AI_GATEWAY_API_KEY", "")
+        os.environ["OPENAI_API_BASE"] = context.env.get("AI_GATEWAY_BASE_URL", "https://ai-gateway.edgeone.link/v1")
+        os.environ["OPENAI_MODEL_NAME"] = context.env.get("AI_GATEWAY_MODEL", "openai/gpt-4o")
         os.environ["SERPER_API_KEY"] = context.env.get("SERPER_API_KEY", "")
 
         from _crews.content_crew.content_crew import ResearchCrew

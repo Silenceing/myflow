@@ -7,9 +7,9 @@ from crewai_tools import SerperDevTool
 from crewai import LLM
 import os
 
-MODEL = os.environ.get("MODEL", "openai/gpt-4o")
-BASE_URL = os.environ.get("BASE_URL", "")
-API_KEY = os.environ.get("API_KEY", "")
+MODEL = os.environ.get("OPENAI_MODEL_NAME", "openai/gpt-4o")
+BASE_URL = os.environ.get("OPENAI_API_BASE", "")
+API_KEY = os.environ.get("OPENAI_API_KEY", "")
 
 llm_kwargs = {
     "model": MODEL,

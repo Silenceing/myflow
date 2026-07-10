@@ -37,7 +37,7 @@ function App() {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 300000)
 
-      const response = await fetch('/index', {
+      const response = await fetch('/stream', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic: topic.trim() }),

@@ -13,9 +13,5 @@ build/
 .crewai/
 *.log
 python_src/
-
-# Tencent Cloud EdgeOne
-.env
-.edgeone/*
-.tef_dist/*
-  
+.edgeone/
+.tef_dist/

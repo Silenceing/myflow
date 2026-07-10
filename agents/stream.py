@@ -1,5 +1,9 @@
 import os
 os.environ.setdefault('CREWAI_DISABLE_VERSION_CHECK', 'true')
+os.environ.setdefault('OTEL_TRACES_EXPORTER', 'none')
+os.environ.setdefault('OTEL_METRICS_EXPORTER', 'none')
+os.environ.setdefault('OTEL_LOGS_EXPORTER', 'none')
+os.environ.setdefault('CREWAI_DISABLE_TELEMETRY', 'true')
 
 import sys
 import json
@@ -21,6 +25,10 @@ async def handler(context):
         os.environ["OPENAI_API_BASE"] = context.env.get("AI_GATEWAY_BASE_URL", "https://ai-gateway.edgeone.link/v1")
         os.environ["OPENAI_MODEL_NAME"] = context.env.get("AI_GATEWAY_MODEL", "openai/gpt-4o")
         os.environ["SERPER_API_KEY"] = context.env.get("SERPER_API_KEY", "")
+
+        print(f"DEBUG: OPENAI_API_KEY={'set' if os.environ.get('OPENAI_API_KEY') else 'MISSING'}", flush=True)
+        print(f"DEBUG: OPENAI_API_BASE={os.environ.get('OPENAI_API_BASE', 'MISSING')}", flush=True)
+        print(f"DEBUG: OPENAI_MODEL_NAME={os.environ.get('OPENAI_MODEL_NAME', 'MISSING')}", flush=True)
 
         from _crews.content_crew.content_crew import ResearchCrew
 

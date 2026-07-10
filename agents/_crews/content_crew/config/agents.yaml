@@ -1,4 +1,4 @@
-# src/latest_ai_flow/crews/content_crew/config/agents.yaml
+# agents/_crews/content_crew/config/agents.yaml
 researcher:
   role: >
     {topic} Senior Data Researcher

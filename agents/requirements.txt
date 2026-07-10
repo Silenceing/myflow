@@ -1,1 +1,2 @@
 crewai[litellm,tools]>=1.14.3
+crewai-tools>=1.15.0

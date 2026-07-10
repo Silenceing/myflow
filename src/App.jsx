@@ -39,7 +39,10 @@ function App() {
 
       const response = await fetch('/stream', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'makers-conversation-id': crypto.randomUUID(),
+        },
         body: JSON.stringify({ topic: topic.trim() }),
         signal: controller.signal,
       })
